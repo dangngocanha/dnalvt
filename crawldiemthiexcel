@@ -1,0 +1,21 @@
+from selenium import webdriver
+from time import sleep
+from selenium.webdriver.common.keys import Keys
+import xlsxwriter
+wb=xlsxwriter.Workbook('diemthigiavien1.xlsx')
+ws=wb.add_worksheet()
+trinhduyet = webdriver.Chrome(executable_path="./chromedriver.exe")
+trinhduyet.get("http://ninhbinh.edu.vn/tra-cuu/bang-diem")
+sbd=trinhduyet.find_element_by_name("keyword")
+sleep(2)
+for i in range(170001,170010):
+    sbd.send_keys(str(i).zfill(6))
+    sbd.send_keys(Keys.ENTER)
+    sbd.clear()
+    sleep(0.2)
+    diemthi=trinhduyet.find_elements_by_xpath("//table[@class='table table-bordered table-hover']/tbody/tr/td")
+    ws.write(i-170001,0,diemthi[0].text)
+    ws.write(i-170001,1,diemthi[1].text)
+    ws.write(i-170001,2,diemthi[2].text)
+    ws.write(i-170001,3,diemthi[3].text)
+wb.close()
